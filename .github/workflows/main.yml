@@ -1,0 +1,36 @@
+name: Code Coverage
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt  # Replace with your requirements file if applicable
+
+    - name: Run tests with coverage
+      run: |
+        pytest --cov=your_module tests/  # Replace 'your_module' with your module name and 'tests/' with your tests directory
+
+    - name: Upload coverage report
+      uses: codecov/codecov-action@v2
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}  # Make sure to add CODECOV_TOKEN as a secret in your repository settings
